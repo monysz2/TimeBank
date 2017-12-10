@@ -25,14 +25,14 @@ public class Service {
      * 3 - withdrawn
      */
 
-    public Service(String founder, String service, double allTime, int id, int founderId)
+    public Service(String founder, String service, double allTime, int id, int founderId, ArrayList<String> list)
     {
         this.id = id;
         this.founderName = founder;
         this.serviceName = service;
         this.allTimeToSpend = allTime;
         this.timeOfServicing = 0.0;
-        this.listOfDates = new ArrayList<>();
+        this.listOfDates = list;
         this.renterName = new String();
         this.status = 0;
         this.founderId = founderId;
@@ -58,10 +58,10 @@ public class Service {
             this.changeStatusToUnused();
     }
 
-    void setDates (ArrayList<String> list)
+    /*void setDates ()
     {
         this.listOfDates = list;
-    }
+    }*/
 
     void withdrawAService()
     {
@@ -105,5 +105,23 @@ public class Service {
 
     int getId() { return this.id; }
 
+    int getFounderId() { return this.founderId; }
 
+    void printService()
+    {
+        Server.out.println("ID: " + this.id);
+        Server.out.println("Name: " + this.serviceName);
+        Server.out.println("Founder ID: " + this.founderId);
+        Server.out.println("Founder name: " + this.founderName);
+        Server.out.println("Time to spend:" + this.allTimeToSpend);
+        Server.out.println("Time used: " + this.timeOfServicing);
+        Server.out.println("Possible dates: ");
+        for(int i=0 ; i<this.listOfDates.size();i++)
+        {
+            Server.out.println(i+1 + ") " + this.listOfDates.get(i));
+        }
+        Server.out.println("Renter name: " + this.renterName);
+        Server.out.println("Status: " + this.getStatus());
+
+    }
 }

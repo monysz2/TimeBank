@@ -1,6 +1,7 @@
 package sample;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Bank {
     static ArrayList<Service> services;
@@ -26,7 +27,7 @@ public class Bank {
 
     static int getNextServiceId() { return nextServiceId++; }
 
-    static void printAllServices()
+    /*static void printAllServices()
     {
         for(int i = 0; i<services.size()-1;i++)
         {
@@ -46,10 +47,10 @@ public class Bank {
             System.out.println( "Time already spent: " + services.get(i).getTimeOfServicing());
         }
     }
-
+    */
     static boolean rentService(int id, String requesterName)
     {
-        for(int i = 0; i<services.size()-1;i++)
+        for(int i = 0; i<services.size();i++)
         {
             if(services.get(i).getId() == id)
             {
@@ -62,7 +63,7 @@ public class Bank {
 
     static boolean releaseService(int id)
     {
-        for(int i = 0; i<services.size()-1;i++)
+        for(int i = 0; i<services.size();i++)
         {
             if(services.get(i).getId() == id)
             {
@@ -73,9 +74,24 @@ public class Bank {
         return false;
     }
 
-    static boolean deleteService(int id, int fomerId)
+    static boolean deleteService(int id, int formerId)
     {
-        for(int i=0; i<services.)
+        for(Iterator<Service> iter = services.iterator(); iter.hasNext();) {
+            Service toRemove = iter.next();
+            if ((toRemove.getId() == id)&&(toRemove.getFounderId() == formerId)) {
+                iter.remove();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void printAllServices()
+    {
+        for(Iterator<Service> iter = services.iterator(); iter.hasNext();) {
+            Service toDisplay = iter.next();
+            toDisplay.printService();
+        }
     }
 
 }
