@@ -1,10 +1,12 @@
 package sample;
 
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.util.ArrayList;
 
 public class Service {
     private String founderName;
+    PrintWriter out;
     private String serviceName;
     private ArrayList<String> listOfDates;
     private double allTimeToSpend;
@@ -25,7 +27,7 @@ public class Service {
      * 3 - withdrawn
      */
 
-    public Service(String founder, String service, double allTime, int id, int founderId, ArrayList<String> list)
+    public Service(String founder, String service, double allTime, int id, int founderId, ArrayList<String> list, PrintWriter out)
     {
         this.id = id;
         this.founderName = founder;
@@ -36,6 +38,7 @@ public class Service {
         this.renterName = new String();
         this.status = 0;
         this.founderId = founderId;
+        this.out = out;
 
     }
 
@@ -107,21 +110,6 @@ public class Service {
 
     int getFounderId() { return this.founderId; }
 
-    void printService()
-    {
-        Server.out.println("ID: " + this.id);
-        Server.out.println("Name: " + this.serviceName);
-        Server.out.println("Founder ID: " + this.founderId);
-        Server.out.println("Founder name: " + this.founderName);
-        Server.out.println("Time to spend:" + this.allTimeToSpend);
-        Server.out.println("Time used: " + this.timeOfServicing);
-        Server.out.println("Possible dates: ");
-        for(int i=0 ; i<this.listOfDates.size();i++)
-        {
-            Server.out.println(i+1 + ") " + this.listOfDates.get(i));
-        }
-        Server.out.println("Renter name: " + this.renterName);
-        Server.out.println("Status: " + this.getStatus());
 
-    }
+    
 }

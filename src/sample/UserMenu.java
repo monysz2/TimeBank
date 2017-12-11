@@ -1,22 +1,30 @@
 package sample;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 class UserMenu {
     
     private Customer customer;
+    PrintWriter out;
+    BufferedReader inBuff;
 
 
-    UserMenu() throws IOException { customer = new Customer(getCustomerName()); }
+    UserMenu(PrintWriter o, BufferedReader i) throws IOException {
+        out = o;
+        inBuff = i;
+        customer = new Customer(getCustomerName());
+    }
 
     synchronized private String getCustomerName() throws IOException {
-        synchronized (Server.out) {
+        synchronized (this.out) {
             Scanner in = new Scanner(System.in);
-            Server.out.println("Input your name: ");
-            Server.out.println("> ");
-            String toReturn = Server.inBuff.readLine();
+            this.out.println("Input your name: ");
+            this.out.println("> ");
+            String toReturn = this.inBuff.readLine();
             //in.close();
             return toReturn;
         }
@@ -24,27 +32,27 @@ class UserMenu {
     }
 
     synchronized void createService() throws IOException {
-        synchronized (Server.out) {
-            Server.out.println("Type the name of service: ");
-            Server.out.println("> ");
+        synchronized (this.out) {
+            this.out.println("Type the name of service: ");
+            this.out.println("> ");
             String serviceName;
             double time;
             String date;
             ArrayList<String> dates = new ArrayList<>();
             Scanner in = new Scanner(System.in);
-            serviceName = Server.inBuff.readLine();
-            Server.out.println("Give time: ");
-            Server.out.println("> ");
-            time = Double.parseDouble(Server.inBuff.readLine());
-            Server.out.println("Give possible dates [empty = break]:");
-            Server.out.println("> ");
-            date = Server.inBuff.readLine();
+            serviceName = this.inBuff.readLine();
+            this.out.println("Give time: ");
+            this.out.println("> ");
+            time = Double.parseDouble(this.inBuff.readLine());
+            this.out.println("Give possible dates [empty = break]:");
+            this.out.println("> ");
+            date = this.inBuff.readLine();
             while (date.length() > 9) {
-                Server.out.println("> ");
+                this.out.println("> ");
                 dates.add(date);
-                date = Server.inBuff.readLine();
+                date = this.inBuff.readLine();
             }
-            Service toAdd = new Service(this.customer.getName(), serviceName, time, Bank.getNextServiceId(), customer.getId(), dates);
+            Service toAdd = new Service(this.customer.getName(), serviceName, time, Bank.getNextServiceId(), customer.getId(), dates, this.out);
             //toAdd.setDates(dates);
             Bank.addService(toAdd);
             //in.close();
@@ -52,43 +60,43 @@ class UserMenu {
     }
 
     synchronized void rentService() throws IOException {
-        synchronized (Server.out) {
-            Server.out.println("Type Service ID: ");
-            Server.out.println("> ");
+        synchronized (this.out) {
+            this.out.println("Type Service ID: ");
+            this.out.println("> ");
             Scanner in = new Scanner(System.in);
-            int id = Integer.parseInt(Server.inBuff.readLine());
+            int id = Integer.parseInt(this.inBuff.readLine());
             if (Bank.rentService(id, customer.getName()) == true) {
-                Server.out.println("You have rented a service with ID = " + id);
+                this.out.println("You have rented a service with ID = " + id);
             } else
-                Server.out.println("The problem with service occured. You haven't rent this service.");
+                this.out.println("The problem with service occured. You haven't rent this service.");
             //in.close();
         }
     }
 
     synchronized void releaseService() throws IOException {
-        Server.out.println("Type Service ID: ");
-        Server.out.println("> ");
+        this.out.println("Type Service ID: ");
+        this.out.println("> ");
         Scanner in = new Scanner(System.in);
-        int id = Integer.parseInt(Server.inBuff.readLine());
+        int id = Integer.parseInt(this.inBuff.readLine());
         if(Bank.releaseService(id) == true)
         {
-                Server.out.println( "The service has been released successfully! ");
+                this.out.println( "The service has been released successfully! ");
         }else
-            Server.out.println("The problem has been occured during a releasing proccess!");
+            this.out.println("The problem has been occured during a releasing proccess!");
         //in.close();
 
     }
 
     synchronized void deleteService() throws IOException {
-        Server.out.println("Type Service ID: ");
-        Server.out.println("> ");
+        this.out.println("Type Service ID: ");
+        this.out.println("> ");
         Scanner in = new Scanner(System.in);
-        int id = Integer.parseInt(Server.inBuff.readLine());
+        int id = Integer.parseInt(this.inBuff.readLine());
         if(Bank.deleteService(id, customer.getId())==true)
         {
-            Server.out.println( "The service has been deleted successfully! ");
+            this.out.println( "The service has been deleted successfully! ");
         }else
-            Server.out.println( "The problem has been occured. You aren't a former of this service or service had been deleted earlier!");
+            this.out.println( "The problem has been occured. You aren't a former of this service or service had been deleted earlier!");
     }
 
 

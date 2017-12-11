@@ -1,5 +1,6 @@
 package sample;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -86,12 +87,26 @@ public class Bank {
         return false;
     }
 
-    void printAllServices()
+    void printAllServices(PrintWriter out)
     {
         for(Iterator<Service> iter = services.iterator(); iter.hasNext();) {
             Service toDisplay = iter.next();
-            toDisplay.printService();
+                out.println("ID: " + toDisplay.getId());
+                out.println("Name: " + toDisplay.getServiceName());
+                out.println("Founder ID: " + toDisplay.getFounderId());
+                out.println("Founder name: " + toDisplay.getFounderName());
+                out.println("Time to spend:" + toDisplay.getAllTimeToSpend());
+                out.println("Time used: " + toDisplay.getTimeOfServicing());
+                out.println("Possible dates: ");
+                for(int i=0 ; i<toDisplay.getListOfDates().size();i++)
+                {
+                    out.println(i+1 + ") " + toDisplay.getListOfDates().get(i));
+                }
+                out.println("Renter name: " + toDisplay.getRenterName());
+                out.println("Status: " + toDisplay.getStatus());
+
+            }
         }
     }
 
-}
+

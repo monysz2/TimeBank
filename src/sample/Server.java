@@ -10,9 +10,9 @@ import java.util.Scanner;
 
 
 public class Server extends Thread{
-    static PrintWriter out;
-    static Socket clientSocket;
-    static BufferedReader inBuff;
+    PrintWriter out;
+    Socket clientSocket;
+    BufferedReader inBuff;
 
 
     Server(Socket so) throws IOException {
@@ -26,12 +26,12 @@ public class Server extends Thread{
 
 
     synchronized public void run() {
-        synchronized (out) {
+
 
             Scanner in = new Scanner(System.in);
             UserMenu menu = null;
             try {
-                menu = new UserMenu();
+                menu = new UserMenu(out, inBuff);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -52,7 +52,7 @@ public class Server extends Thread{
                             choice = Integer.parseInt(this.inBuff.readLine());
                             break;
                         case 2:
-                            Main.bank.printAllServices();
+                            Main.bank.printAllServices(this.out);
                             printMenu();
                             choice = Integer.parseInt(this.inBuff.readLine());
                             break;
@@ -86,7 +86,7 @@ public class Server extends Thread{
             } catch (Exception ex) {
             }
         }
-    }
+
 
         synchronized public void printMenu()
         {
@@ -100,4 +100,6 @@ public class Server extends Thread{
             this.out.println("0) Exit");
             this.out.println("> ");
         }
+
+
     }
